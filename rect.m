@@ -1,5 +1,6 @@
-clear ;
 
+clear ;
+% The polygon that I am working on
 poly=[0 -0.085 1.14 -0.085 1.14 0.085 1.07 0.085 1.07 0.195 1 0.195 1 0.085 ...
 0.485 0.085 0.485 0.275 0.415 0.275 0.415 0.085 0.11 0.085 0.11 0.275 0.04 ...
 0.275 0.04 0.085 0 0.085];
@@ -22,7 +23,7 @@ for i = 1 : length (poly)
 end
 
 fullcover       = false ;
-while ( xcoords.size () > 4  ) 
+while ( xcoords.size () > 4 ) & ( fullcover == false )
     for i = 1 : 3
         xtmp(i) = xcoords.remove () ;
         ytmp(i) = ycoords.remove () ;
@@ -37,7 +38,7 @@ while ( xcoords.size () > 4  )
     % Roll forward until the typical four kinds of pattern have been
     % followed and make sure that there is no overlapping issues
     fullcover       = false ;
-    while ( followPattern == false | overlap == true ) & fullcover == false
+    while ( followPattern == false | overlap == true ) & ( fullcover == false )
         overlap = false ;
         if rectx.size() > 4 
             sizeX  = rectx.size () ;
@@ -64,7 +65,8 @@ while ( xcoords.size () > 4  )
                 recty.add ( y3 ) ;
                 rectx.add ( x4 ) ;
                 recty.add ( y4 ) ;
-            end  
+            end
+            
             % ensure existing points are not in the generated rectangle
             if ~overlap
                 sizeX = xcoords.size () ;
@@ -153,18 +155,21 @@ while ( xcoords.size () > 4  )
             end
             Plots ;
         end
-        Plots ;  
+        Plots ;
+        save forfullcoverTest ;
         fullcoverTest ;
     end
 end
 
-rectx.add(xcoords.remove());
-recty.add(ycoords.remove());
-rectx.add(xcoords.remove());
-recty.add(ycoords.remove());
-rectx.add(xcoords.remove());
-recty.add(ycoords.remove());
-rectx.add(xcoords.remove());
-recty.add(ycoords.remove());
+if fullcover == 0 
+    rectx.add(xcoords.remove());
+    recty.add(ycoords.remove());
+    rectx.add(xcoords.remove());
+    recty.add(ycoords.remove());
+    rectx.add(xcoords.remove());
+    recty.add(ycoords.remove());
+    rectx.add(xcoords.remove());
+    recty.add(ycoords.remove());
+end
 
 save saveData
