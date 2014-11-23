@@ -1,4 +1,7 @@
 
+plotx = ones ( length ( poly ) / 2 , 1 ) ;
+ploty = ones ( length ( poly ) / 2 , 1 ) ;
+
 for i = 1 : rectx.size() 
     plotx ( i ) = rectx.remove () ;
     ploty ( i ) = recty.remove () ;

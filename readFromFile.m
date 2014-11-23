@@ -22,13 +22,13 @@ save readFromFile ;
 
 %% read in the file 
 
-h = waitbar(0,'Initializing waitbar...');
+%h = waitbar(0,'Initializing waitbar...');
 sizeofNames     = size ( fileName ) ;
 for i = 1 : sizeofNames ( 2 ) 
     
     % Progress Bar
-    perc            = ( i - 1 ) / sizeofNames ( 2 ) * 10 ;
-    waitbar ( perc/100 , h , sprintf ( '%f%% along...' , perc ) ) ;
+    %perc            = ( i - 1 ) / sizeofNames ( 2 ) * 10 ;
+    %waitbar ( perc/100 , h , sprintf ( '%3.2f%% along...' , perc ) ) ;
     
     readName        = char ( strcat ( 'lef/' , fileName ( i ) , '.lef' ) );
     writeName       = char ( strcat ( 'txt/' , fileName ( i ) , '.txt' ) );
@@ -68,10 +68,12 @@ for i = 1 : sizeofNames ( 2 )
             
             % Reformating: convert cell to string and then convert string
             % to vector
-            polyreadin      = strread ( cell2mat ( polyreadin ) ) ;
-            polyreadin_pre  = strread ( cell2mat ( polyreadin_pre ) ) ;
+            polyreadin_post      = strread ( cell2mat ( polyreadin ) ) ;
+            polyreadin_pre_post  = strread ( cell2mat ( polyreadin_pre ) ) ;
             
-            poly    = cat ( 2 , polyreadin_pre , polyreadin ) ;
+            poly_post            = cat ( 2 , polyreadin_pre_post ,...
+                                polyreadin_post ) ;
+            poly                 = poly_post ( 1 : end - 1 ) ;
             % executing formating
             rect ;
             fprintf ( fWriteID , ...
@@ -80,14 +82,17 @@ for i = 1 : sizeofNames ( 2 )
             % Different structure spliter.
             fprintf ( fWriteID , '\n' ) ;
         elseif ~isempty ( polyreadin_pre )
-            poly    = polyreadin_pre ; 
+            polyreadin_pre_post  = strread ( cell2mat ( polyreadin_pre ) ) ;            
+            poly_post            = polyreadin_pre_post ; 
+            poly                 = poly_post ( 1 : end - 1 ) ;
             % executing formating
+            save fordebug ;
             rect ;
             fprintf ( fWriteID , ...
                         [repmat('%f ', 1, size(writeResult, 2)) '\n'], ...
                         writeResult') ;
             % Different structure spliter.
-            fprintf ( fWriteID , '\n' ) ;           
+            fprintf ( fWriteID , '\n' ) ;
         end
         % This is for polygon with two lines
         line_f_pre  = line_f ; 
@@ -112,7 +117,5 @@ end
 
 %%Save data
 save readFromFile ;
-
-    
-close(h);
+%close(h);
 

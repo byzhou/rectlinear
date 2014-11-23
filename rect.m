@@ -1,10 +1,12 @@
 
-
+% clear ;
 % The polygon that I am working on
-poly=[0 -0.085 1.14 -0.085 1.14 0.085 1.07 0.085 1.07 0.195 1 0.195 1 0.085 ...
-0.485 0.085 0.485 0.275 0.415 0.275 0.415 0.085 0.11 0.085 0.11 0.275 0.04 ...
-0.275 0.04 0.085 0 0.085];
+%poly=[0 -0.085 1.14 -0.085 1.14 0.085 1.07 0.085 1.07 0.195 1 0.195 1 0.085 ...
+%0.485 0.085 0.485 0.275 0.415 0.275 0.415 0.085 0.11 0.085 0.11 0.275 0.04 ...
+%0.275 0.04 0.085 0 0.085];
+load fordebug ;
 
+%resPlots ;
 % initialization
 xcoords = java.util.LinkedList () ;
 ycoords = java.util.LinkedList () ;
@@ -153,7 +155,7 @@ while ( xcoords.size () > 4 ) & ( fullcover == false )
                 xcoords.add(x4);
                 ycoords.add(y4);
             end
-            %Plots ;
+            Plots ;
         end
         %Plots ;
         save forfullcoverTest ;
@@ -162,6 +164,7 @@ while ( xcoords.size () > 4 ) & ( fullcover == false )
         fullcoverTest ;
     end
 end
+
 
 if fullcover == 0 
     rectx.add(xcoords.remove());
@@ -173,6 +176,7 @@ if fullcover == 0
     rectx.add(xcoords.remove());
     recty.add(ycoords.remove());
 end
+Plots;
 
 % Get the result out
 outputResult ;
