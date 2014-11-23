@@ -176,7 +176,7 @@ if fullcover == 0
     rectx.add(xcoords.remove());
     recty.add(ycoords.remove());
 end
-Plots;
+%Plots;
 
 % Get the result out
 outputResult ;
