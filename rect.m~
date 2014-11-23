@@ -1,5 +1,5 @@
 
-clear ;
+
 % The polygon that I am working on
 poly=[0 -0.085 1.14 -0.085 1.14 0.085 1.07 0.085 1.07 0.195 1 0.195 1 0.085 ...
 0.485 0.085 0.485 0.275 0.415 0.275 0.415 0.085 0.11 0.085 0.11 0.275 0.04 ...
@@ -155,18 +155,22 @@ while ( xcoords.size () > 4 ) & ( fullcover == false )
             end
             Plots ;
         end
-        Plots ;  
+        Plots ;
+        save forfullcoverTest ;
         fullcoverTest ;
     end
 end
 
-rectx.add(xcoords.remove());
-recty.add(ycoords.remove());
-rectx.add(xcoords.remove());
-recty.add(ycoords.remove());
-rectx.add(xcoords.remove());
-recty.add(ycoords.remove());
-rectx.add(xcoords.remove());
-recty.add(ycoords.remove());
+if fullcover == 0 
+    rectx.add(xcoords.remove());
+    recty.add(ycoords.remove());
+    rectx.add(xcoords.remove());
+    recty.add(ycoords.remove());
+    rectx.add(xcoords.remove());
+    recty.add(ycoords.remove());
+    rectx.add(xcoords.remove());
+    recty.add(ycoords.remove());
+end
+
 
 save saveData

@@ -157,6 +157,8 @@ while ( xcoords.size () > 4 ) & ( fullcover == false )
         end
         Plots ;
         save forfullcoverTest ;
+        % Force the result to put to an end once all the points are inside
+        % of other rectangulars.
         fullcoverTest ;
     end
 end
@@ -171,5 +173,8 @@ if fullcover == 0
     rectx.add(xcoords.remove());
     recty.add(ycoords.remove());
 end
+
+% Get the result out
+outputResult ;
 
 save saveData
