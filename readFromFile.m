@@ -26,8 +26,9 @@ h = waitbar(0,'Initializing waitbar...');
 sizeofNames     = size ( fileName ) ;
 for i = 1 : sizeofNames ( 2 ) 
     
+    % Progress Bar
     perc            = ( i - 1 ) / sizeofNames ( 2 ) * 10 ;
-    waitbar(perc/100,h,sprintf('%d%% along...',perc)) ;
+    waitbar ( perc/100 , h , sprintf ( '%f%% along...' , perc ) ) ;
     
     readName        = char ( strcat ( 'lef/' , fileName ( i ) , '.lef' ) );
     writeName       = char ( strcat ( 'txt/' , fileName ( i ) , '.txt' ) );

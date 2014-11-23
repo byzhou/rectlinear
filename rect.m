@@ -127,7 +127,7 @@ while ( xcoords.size () > 4 ) & ( fullcover == false )
             ytmp ( 2 ) = ytmp ( 3 ) ;
             xtmp ( 3 ) = xcoords.remove () ;
             ytmp ( 3 ) = ycoords.remove () ;
-            Plots ;
+            %Plots ;
         elseif followPattern == true & overlap == false 
             % Store the first and fourth points into the original point pool
             xcoords.add ( x1 ) ;
@@ -153,9 +153,9 @@ while ( xcoords.size () > 4 ) & ( fullcover == false )
                 xcoords.add(x4);
                 ycoords.add(y4);
             end
-            Plots ;
+            %Plots ;
         end
-        Plots ;
+        %Plots ;
         save forfullcoverTest ;
         % Force the result to put to an end once all the points are inside
         % of other rectangulars.
