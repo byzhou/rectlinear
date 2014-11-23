@@ -1,12 +1,12 @@
 
-% clear ;
+ clear ;
 % The polygon that I am working on
-%poly=[0 -0.085 1.14 -0.085 1.14 0.085 1.07 0.085 1.07 0.195 1 0.195 1 0.085 ...
-%0.485 0.085 0.485 0.275 0.415 0.275 0.415 0.085 0.11 0.085 0.11 0.275 0.04 ...
-%0.275 0.04 0.085 0 0.085];
-load fordebug ;
+poly=[0 -0.085 1.14 -0.085 1.14 0.085 1.07 0.085 1.07 0.195 1 0.195 1 0.085 ...
+0.485 0.085 0.485 0.275 0.415 0.275 0.415 0.085 0.11 0.085 0.11 0.275 0.04 ...
+0.275 0.04 0.085 0 0.085];
+%load fordebug ;
 
-%resPlots ;
+resPlots ;
 % initialization
 xcoords = java.util.LinkedList () ;
 ycoords = java.util.LinkedList () ;
@@ -55,7 +55,8 @@ while ( xcoords.size () > 4 ) & ( fullcover == false )
     % Roll forward until the typical four kinds of pattern have been
     % followed and make sure that there is no overlapping issues
     fullcover       = false ;
-    while ( followPattern == false | overlap == true ) & ( fullcover == false )
+    while ( followPattern == false | overlap == true ) ...
+        & ( fullcover == false ) & ( xcoords.size () > 4 )
         overlap = false ;
         if rectx.size() > 4 
             sizeX  = rectx.size () ;
@@ -121,25 +122,26 @@ while ( xcoords.size () > 4 ) & ( fullcover == false )
             % The similar pattern has followed
             followPattern = true ;
             % Calculate the fourth point
-            [x4 y4] = x4y4 ( xtmp ( 1 ) , ytmp ( 1 ) , xtmp ( 2 ) , ytmp ( 2 ) ,...
-                             xtmp ( 3 ) , ytmp ( 3 ) ) ;
-            if x4 == 10000 | y4 == 10000
+            [input_x4 input_y4] = x4y4 ( xtmp ( 1 ) , ytmp ( 1 ) , ...
+                                    xtmp ( 2 ) , ytmp ( 2 ) , ...
+                                    xtmp ( 3 ) , ytmp ( 3 ) ) ;
+            if input_x4 == 10000 | input_y4 == 10000
                 fprintf ( 'noooooooo\n' ) ;
             end
-            x1  = xtmp ( 1 ) ;
-            y1  = ytmp ( 1 ) ;
-            x2  = xtmp ( 2 ) ;
-            y2  = ytmp ( 2 ) ;
-            x3  = xtmp ( 3 ) ;
-            y3  = ytmp ( 3 ) ;
-            rectx.add ( x1 ) ;
-            recty.add ( y1 ) ;
-            rectx.add ( x2 ) ;
-            recty.add ( y2 ) ;
-            rectx.add ( x3 ) ;
-            recty.add ( y3 ) ;
-            rectx.add ( x4 ) ;
-            recty.add ( y4 ) ;
+            input_x1  = xtmp ( 1 ) ;
+            input_y1  = ytmp ( 1 ) ;
+            input_x2  = xtmp ( 2 ) ;
+            input_y2  = ytmp ( 2 ) ;
+            input_x3  = xtmp ( 3 ) ;
+            input_y3  = ytmp ( 3 ) ;
+            rectx.add ( input_x1 ) ;
+            recty.add ( input_y1 ) ;
+            rectx.add ( input_x2 ) ;
+            recty.add ( input_y2 ) ;
+            rectx.add ( input_x3 ) ;
+            recty.add ( input_y3 ) ;
+            rectx.add ( input_x4 ) ;
+            recty.add ( input_y4 ) ;
             
         end
             
@@ -156,8 +158,8 @@ while ( xcoords.size () > 4 ) & ( fullcover == false )
             %Plots ;
         elseif followPattern == true & overlap == false 
             % Store the first and fourth points into the original point pool
-            xcoords.add ( x1 ) ;
-            ycoords.add ( y1 ) ;
+            xcoords.add ( input_x1 ) ;
+            ycoords.add ( input_y1 ) ;
             % Check whether the fourth point is in the point pool
             inlib = false ;
             
@@ -169,19 +171,18 @@ while ( xcoords.size () > 4 ) & ( fullcover == false )
                 k = k + 1 ;
                 xcout = xcoords.remove() ;
                 ycout = ycoords.remove() ;
-                if ( x4 == xcout ) & ( y4 == ycout )
+                if ( input_x4 == xcout ) & ( input_y4 == ycout )
                     inlib = true ;
                 end
                 xcoords.add(xcout);
                 ycoords.add(ycout);
             end
             if inlib == false
-                xcoords.add(x4);
-                ycoords.add(y4);
+                xcoords.add(input_x4);
+                ycoords.add(input_y4);
             end
-            %Plots ;
+            Plots ;
         end
-        Plots ;
         save forfullcoverTest ;
         % Force the result to put to an end once all the points are inside
         % of other rectangulars.
@@ -189,7 +190,7 @@ while ( xcoords.size () > 4 ) & ( fullcover == false )
     end
 end
 
-
+%{
 if fullcover == 0 
     rectx.add(xcoords.remove());
     recty.add(ycoords.remove());
@@ -200,10 +201,11 @@ if fullcover == 0
     rectx.add(xcoords.remove());
     recty.add(ycoords.remove());
 end
+%}
 
-Plots;
+%Plots;
 
 % Get the result out
-outputResult ;
+%outputResult ;
 
 save saveData

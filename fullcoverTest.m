@@ -52,5 +52,22 @@ end
 for i = 1 : sizeX
     if ( regcover ( i ) == false )
         fullcover = false ;
+        %fprintf ( 'The outer points are \n' ) ;
+        %fprintf ( 'x %f y %f \n' , tmpx ( i ) , tmpy ( i ) ) ;
+    end
+end
+
+sizeX   = xcoords.size () ;
+sizeY   = ycoords.size () ;
+for i = 1 : length ( regcover ) 
+    if regcover ( i ) == true
+        for j = 1 : sizeX 
+            myy = xcoords.remove () ;
+            myx = ycoords.remove () ;
+            if myx ~= tmpx ( i ) | myy ~= tmpy ( i ) 
+                xcoords.add ( myx ) ;
+                ycoords.add ( myy ) ;
+            end
+        end
     end
 end
