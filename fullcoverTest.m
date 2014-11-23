@@ -56,7 +56,7 @@ for i = 1 : sizeX
         %fprintf ( 'x %f y %f \n' , tmpx ( i ) , tmpy ( i ) ) ;
     end
 end
-
+%{
 sizeX   = xcoords.size () ;
 sizeY   = ycoords.size () ;
 for i = 1 : length ( regcover ) 
@@ -71,3 +71,4 @@ for i = 1 : length ( regcover )
         end
     end
 end
+%}
