@@ -1,10 +1,12 @@
 
-
+% clear ;
 % The polygon that I am working on
-poly=[0 -0.085 1.14 -0.085 1.14 0.085 1.07 0.085 1.07 0.195 1 0.195 1 0.085 ...
-0.485 0.085 0.485 0.275 0.415 0.275 0.415 0.085 0.11 0.085 0.11 0.275 0.04 ...
-0.275 0.04 0.085 0 0.085];
+%poly=[0 -0.085 1.14 -0.085 1.14 0.085 1.07 0.085 1.07 0.195 1 0.195 1 0.085 ...
+%0.485 0.085 0.485 0.275 0.415 0.275 0.415 0.085 0.11 0.085 0.11 0.275 0.04 ...
+%0.275 0.04 0.085 0 0.085];
+load fordebug ;
 
+%resPlots ;
 % initialization
 xcoords = java.util.LinkedList () ;
 ycoords = java.util.LinkedList () ;
@@ -12,6 +14,21 @@ xtmp    = ones ( 3 , 1 ) ;
 ytmp    = ones ( 3 , 1 ) ;
 rectx   = java.util.LinkedList ();
 recty   = java.util.LinkedList ();
+
+% reset all the queue
+sizeX   = xcoords.size () ; 
+sizeY   = ycoords.size () ;
+for i = 1 : sizeX
+    xcoords.remove () ;
+    ycoords.remove () ;
+end
+
+sizeX   = rectx.size () ;
+sizeY   = recty.size () ;
+for i = 1 : sizeX
+    rectx.remove () ;
+    recty.remove () ;
+end
 
 % unroll to x and y coordinates
 for i = 1 : length (poly) 
@@ -88,13 +105,13 @@ while ( xcoords.size () > 4 ) & ( fullcover == false )
                
         % Outer bounds of a rectangular has been found
         if ( ( ( xtmp ( 1 ) == xtmp ( 2 ) ) & ( ytmp ( 2 ) > ytmp ( 1 ) ) ...
-            & ( xtmp ( 3 ) < xtmp ( 2 ) ) ) | ...
-           ( ( ytmp ( 1 ) == ytmp ( 2 ) ) & ( xtmp ( 2 ) > xtmp ( 1 ) ) ...
-            & ( ytmp ( 3 ) > ytmp ( 2 ) ) ) | ...
-           ( ( xtmp ( 1 ) == xtmp ( 2 ) ) & ( ytmp ( 2 ) < ytmp ( 1 ) ) ...
-            & ( xtmp ( 3 ) > xtmp ( 2 ) ) ) | ...
-           ( ( ytmp ( 1 ) == ytmp ( 2 ) ) & ( xtmp ( 2 ) < xtmp ( 1 ) ) ...
-            & ( ytmp ( 3 ) < ytmp ( 2 ) ) ) )
+        & ( xtmp ( 3 ) < xtmp ( 2 ) ) & ( ytmp ( 3 ) == ytmp ( 2 ) ) ) | ...
+       ( ( ytmp ( 1 ) == ytmp ( 2 ) ) & ( xtmp ( 2 ) > xtmp ( 1 ) ) ...
+        & ( ytmp ( 3 ) > ytmp ( 2 ) ) &) | ...
+       ( ( xtmp ( 1 ) == xtmp ( 2 ) ) & ( ytmp ( 2 ) < ytmp ( 1 ) ) ...
+        & ( xtmp ( 3 ) > xtmp ( 2 ) ) ) | ...
+       ( ( ytmp ( 1 ) == ytmp ( 2 ) ) & ( xtmp ( 2 ) < xtmp ( 1 ) ) ...
+        & ( ytmp ( 3 ) < ytmp ( 2 ) ) ) )
             % The similar pattern has followed
             followPattern = true ;
             % Calculate the fourth point
@@ -127,7 +144,7 @@ while ( xcoords.size () > 4 ) & ( fullcover == false )
             ytmp ( 2 ) = ytmp ( 3 ) ;
             xtmp ( 3 ) = xcoords.remove () ;
             ytmp ( 3 ) = ycoords.remove () ;
-            Plots ;
+            %Plots ;
         elseif followPattern == true & overlap == false 
             % Store the first and fourth points into the original point pool
             xcoords.add ( x1 ) ;
@@ -153,13 +170,16 @@ while ( xcoords.size () > 4 ) & ( fullcover == false )
                 xcoords.add(x4);
                 ycoords.add(y4);
             end
-            Plots ;
+            %Plots ;
         end
         Plots ;
         save forfullcoverTest ;
+        % Force the result to put to an end once all the points are inside
+        % of other rectangulars.
         fullcoverTest ;
     end
 end
+
 
 if fullcover == 0 
     rectx.add(xcoords.remove());
@@ -172,5 +192,9 @@ if fullcover == 0
     recty.add(ycoords.remove());
 end
 
+%Plots;
+
+% Get the result out
+outputResult ;
 
 save saveData

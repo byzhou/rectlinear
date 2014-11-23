@@ -1,7 +1,7 @@
-% reset
+%% reset
 clear ;
 
-% open directory
+%% open directory
 listing         = dir ( 'lef' ) ;
 j               = 1 ;
 sizeoflisting   = size ( listing ) ;
@@ -22,13 +22,13 @@ save readFromFile ;
 
 %% read in the file 
 
-%h = waitbar(0,'Initializing waitbar...');
+h = waitbar(0,'Initializing waitbar...');
 sizeofNames     = size ( fileName ) ;
 for i = 1 : sizeofNames ( 2 ) 
     
     % Progress Bar
-    %perc            = ( i - 1 ) / sizeofNames ( 2 ) * 10 ;
-    %waitbar ( perc/100 , h , sprintf ( '%3.2f%% along...' , perc ) ) ;
+    perc            = ( i - 1 ) / sizeofNames ( 2 ) * 10 ;
+    waitbar ( perc/100 , h , sprintf ( '%3.2f%% along...' , perc ) ) ;
     
     readName        = char ( strcat ( 'lef/' , fileName ( i ) , '.lef' ) );
     writeName       = char ( strcat ( 'txt/' , fileName ( i ) , '.txt' ) );
@@ -117,5 +117,5 @@ end
 
 %%Save data
 save readFromFile ;
-%close(h);
+close(h);
 

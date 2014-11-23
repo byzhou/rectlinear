@@ -15,7 +15,22 @@ ytmp    = ones ( 3 , 1 ) ;
 rectx   = java.util.LinkedList ();
 recty   = java.util.LinkedList ();
 
-% unroll to x and y coordinates
+%% reset all the queue
+sizeX   = xcoords.size () ; 
+sizeY   = ycoords.size () ;
+for i = 1 : sizeX
+    xcoords.remove () ;
+    ycoords.remove () ;
+end
+
+sizeX   = rectx.size () ;
+sizeY   = recty.size () ;
+for i = 1 : sizeX
+    rectx.remove () ;
+    recty.remove () ;
+end
+
+%% unroll to x and y coordinates
 for i = 1 : length (poly) 
     if ( mod ( i , 2 ) == 1 )
         xcoords.add(poly(i)) ;
@@ -57,6 +72,9 @@ while ( xcoords.size () > 4 ) & ( fullcover == false )
                 y4 = recty.remove () ;
                 [tmpx4 tmpy4] = x4y4 ( xtmp ( 1 ) , ytmp ( 1 ) , xtmp ( 2 ) , ...
                 ytmp ( 2 ) , xtmp ( 3 ) , ytmp ( 3 ) ) ;
+                if tmpx4 == 10000 | tmpy4 == 10000
+                        fprintf ( 'noooooooo\n' ) ;
+                end
                 overlap = inrect ( [tmpx4 tmpy4] , x1 , y1 , x2 , y2 , ...
                 x3 , y3 , x4 , y4 ) | overlap ;
                 rectx.add ( x1 ) ;
@@ -79,6 +97,9 @@ while ( xcoords.size () > 4 ) & ( fullcover == false )
                     [x4 y4] = x4y4 ( xtmp ( 1 ) , ytmp ( 1 ) ,...
                                      xtmp ( 2 ) , ytmp ( 2 ) ,...
                                      xtmp ( 3 ) , ytmp ( 3 ) ) ;
+                    if x4 == 10000 | y4 == 10000
+                        fprintf ( 'noooooooo\n' ) ;
+                    end
                     overlap = inrect ( [x1 y1] , ...
                     xtmp ( 1 ) , ytmp ( 1 ) , xtmp ( 2 ) , ytmp ( 2 ) , ...
                     xtmp ( 3 ) , ytmp ( 3 ) , x4 , y4 ) ;
@@ -90,18 +111,21 @@ while ( xcoords.size () > 4 ) & ( fullcover == false )
                
         % Outer bounds of a rectangular has been found
         if ( ( ( xtmp ( 1 ) == xtmp ( 2 ) ) & ( ytmp ( 2 ) > ytmp ( 1 ) ) ...
-            & ( xtmp ( 3 ) < xtmp ( 2 ) ) ) | ...
-           ( ( ytmp ( 1 ) == ytmp ( 2 ) ) & ( xtmp ( 2 ) > xtmp ( 1 ) ) ...
-            & ( ytmp ( 3 ) > ytmp ( 2 ) ) ) | ...
-           ( ( xtmp ( 1 ) == xtmp ( 2 ) ) & ( ytmp ( 2 ) < ytmp ( 1 ) ) ...
-            & ( xtmp ( 3 ) > xtmp ( 2 ) ) ) | ...
-           ( ( ytmp ( 1 ) == ytmp ( 2 ) ) & ( xtmp ( 2 ) < xtmp ( 1 ) ) ...
-            & ( ytmp ( 3 ) < ytmp ( 2 ) ) ) )
+        & ( xtmp ( 3 ) < xtmp ( 2 ) ) & ( ytmp ( 3 ) == ytmp ( 2 ) ) ) | ...
+       ( ( ytmp ( 1 ) == ytmp ( 2 ) ) & ( xtmp ( 2 ) > xtmp ( 1 ) ) ...
+        & ( ytmp ( 3 ) > ytmp ( 2 ) ) & ( xtmp ( 3 ) == xtmp ( 2 ) ) ) | ...
+       ( ( xtmp ( 1 ) == xtmp ( 2 ) ) & ( ytmp ( 2 ) < ytmp ( 1 ) ) ...
+        & ( xtmp ( 3 ) > xtmp ( 2 ) ) & ( ytmp ( 3 ) == ytmp ( 2 ) ) ) | ...
+       ( ( ytmp ( 1 ) == ytmp ( 2 ) ) & ( xtmp ( 2 ) < xtmp ( 1 ) ) ...
+        & ( ytmp ( 3 ) < ytmp ( 2 ) ) & ( xtmp ( 3 ) == xtmp ( 2 ) ) ) )  
             % The similar pattern has followed
             followPattern = true ;
             % Calculate the fourth point
             [x4 y4] = x4y4 ( xtmp ( 1 ) , ytmp ( 1 ) , xtmp ( 2 ) , ytmp ( 2 ) ,...
                              xtmp ( 3 ) , ytmp ( 3 ) ) ;
+            if x4 == 10000 | y4 == 10000
+                fprintf ( 'noooooooo\n' ) ;
+            end
             x1  = xtmp ( 1 ) ;
             y1  = ytmp ( 1 ) ;
             x2  = xtmp ( 2 ) ;
@@ -155,9 +179,9 @@ while ( xcoords.size () > 4 ) & ( fullcover == false )
                 xcoords.add(x4);
                 ycoords.add(y4);
             end
-            Plots ;
+            %Plots ;
         end
-        %Plots ;
+        Plots ;
         save forfullcoverTest ;
         % Force the result to put to an end once all the points are inside
         % of other rectangulars.
@@ -176,7 +200,8 @@ if fullcover == 0
     rectx.add(xcoords.remove());
     recty.add(ycoords.remove());
 end
-%Plots;
+
+Plots;
 
 % Get the result out
 outputResult ;
