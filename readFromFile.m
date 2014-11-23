@@ -53,27 +53,41 @@ for i = 1 : sizeofNames ( 2 )
     while ( ~feof ( fReadID ) ) 
         
         line_f          = fgetl ( fReadID ) ;
-        % regular expression found the string with polygon and then push to
-        % a string and then convert string to double vector
-        polyreadin      = strread ( cell2mat ( regexp ( line_f , ...
-                            '(?<=POLYGON).*(?=;)' , 'match' ) ) ) ;
-        polyreadin_pre  = strread ( cell2mat ( regexp ( line_f_pre , ...
-                            '(?<=POLYGON).*(?=;)' , 'match' ) ) ) ;
+        % regular expression found the string with polygon 
+        polyreadin      = regexp ( line_f , '(?<=POLYGON).*(?=;)' , ...
+                            'match' ) ;
+        polyreadin_pre  = regexp ( line_f_pre , '(?<=POLYGON).*(?=;)' ,...
+                            'match' ) ;
         
         % if polygon series is too long and it contains two consecutive
         % lines, the two lines will be concatenate together, otherwise we
         % only check the last line. This prevent read in twice because of
         % two consecutive lines
         if ~isempty ( polyreadin_pre ) & ~isempty ( polyreadin ) 
+            
+            % Reformating: convert cell to string and then convert string
+            % to vector
+            polyreadin      = strread ( cell2mat ( polyreadin ) ) ;
+            polyreadin_pre  = strread ( cell2mat ( polyreadin_pre ) ) ;
+            
             poly    = cat ( 2 , polyreadin_pre , polyreadin ) ;
+            % executing formating
+            rect ;
+            fprintf ( fwriteID , ...
+                        [repmat('%f ', 1, size(writeResult, 2)) '\n'], ...
+                        writeResult') ;
+            % Different structure spliter.
+            fprintf ( fWriteID , '\n' ) ;
         elseif ~isempty ( polyreadin_pre )
-            poly    = polyreadin_pre ;            
+            poly    = polyreadin_pre ; 
+            % executing formating
+            rect ;
+            fprintf ( fwriteID , ...
+                        [repmat('%f ', 1, size(writeResult, 2)) '\n'], ...
+                        writeResult') ;
+            % Different structure spliter.
+            fprintf ( fWriteID , '\n' ) ;           
         end
-        % executing formating
-        rect ;
-        fprintf ( fWriteID , writeResult ) ;
-        % Different structure spliter.
-        fprintf ( '\n' ) ;
         % This is for polygon with two lines
         line_f_pre  = line_f ; 
     end
