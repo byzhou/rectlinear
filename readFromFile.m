@@ -1,15 +1,17 @@
-%% reset
+% reset
 clear ;
 
-%% open directory
+% open directory
 listing         = dir ( 'lef' ) ;
 j               = 1 ;
 sizeoflisting   = size ( listing ) ;
 
-%% store all the file name 
+% store all the file name 
 for i = 1 : sizeoflisting ( 1 )
     str             = listing ( i ) . name ; 
     tmpFName        = regexp ( str , '\w*(?=\.lef)' , 'match' ) ;
+    %tmpFName        = regexp ( str , '(?<=INV).*' , 'match' ) ;
+    
     if  ~isempty ( tmpFName ) 
         fileName ( j )  = tmpFName ;
         j               = j + 1 ;
@@ -22,19 +24,19 @@ save readFromFile ;
 sizeofNames     = size ( fileName ) ;
 for i = 1 : sizeofNames ( 2 ) 
     readName        = char ( strcat ( 'lef/' , fileName ( i ) , '.lef' ) );
-    writeName       = char ( strcat ( 'lef/' , fileName ( i ) , '.txt' ) );
+    writeName       = char ( strcat ( 'txt/' , fileName ( i ) , '.txt' ) );
     fReadID         = fopen  ( readName , 'r' ) ;
     fWriteID        = fopen  ( writeName , 'w' ) ;
     
     % open read file
-    if ( fReadID ( i ) == -1 )
+    if ( fReadID == -1 )
         fprintf ( 'ERROR: Cannot open %s to read !\n' , readName ) ;
     else
         fprintf ( '%s has been opened successfully!\n' , readName ) ;
     end
     
     % open write file
-    if ( fWriteID ( i ) == -1 )
+    if ( fWriteID == -1 )
         fprintf ( 'ERROR: Cannot open %s to read !\n' , writeName ) ;
     else
         fprintf ( '%s has been opened successfully!\n' , writeName ) ;
@@ -45,8 +47,12 @@ for i = 1 : sizeofNames ( 2 )
     while ( ~feof ( fReadID ) ) 
         
         line_f          = fgetl ( fReadID ) ;
-        polyreadin      = regexp ( line_f , '(?=POLYGON).*' , 'match' ) ;
-        polyreadin_pre  = regexp ( line_f_pre , '(?=POLYGON).*' , 'match' ) ;
+        % regular expression found the string with polygon and then push to
+        % a string and then convert string to double vector
+        polyreadin      = strread ( cell2mat ( regexp ( line_f , ...
+                            '(?<=POLYGON).*(?=;)' , 'match' ) ) ) ;
+        polyreadin_pre  = strread ( cell2mat ( regexp ( line_f_pre , ...
+                            '(?<=POLYGON).*(?=;)' , 'match' ) ) ) ;
         
         % if polygon series is too long and it contains two consecutive
         % lines, the two lines will be concatenate together, otherwise we
@@ -64,12 +70,12 @@ for i = 1 : sizeofNames ( 2 )
     end
     
     % close the files
-    close ( fReadID ) ;
-    close ( fWriteID ) ;
+    fclose ( fReadID ) ;
+    fclose ( fWriteID ) ;
 end
 
 %%Save data
-save Readin ;
-    
+save readFromFile ;
+
     
 
